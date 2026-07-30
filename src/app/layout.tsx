@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cormorant, Manrope } from "next/font/google";
 import "./globals.css";
 
-const display = Cormorant_Garamond({
+/* Figma type spec (nodes 97:40 / 97:45): headings Cormorant, body Manrope. */
+const display = Cormorant({
   subsets: ["latin", "vietnamese"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-display",
 });
 
