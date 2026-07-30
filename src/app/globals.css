@@ -1,0 +1,314 @@
+:root {
+  /* Palette sampled from the Figma price list page (node 229:2) */
+  --cream: #fdf7ec;
+  --cream-deep: #f7ecd9;
+  --sage: #a9be9c;
+  --sage-dark: #8ba57c;
+  --ink: #4a3524;
+  --ink-soft: #7a6350;
+  --accent: #b5793a;
+  --rule: #e3d3b8;
+
+  --space: 24px;
+  --sheet-max: 720px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--sage);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* ---------- Page shell ---------- */
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px 64px;
+}
+
+.masthead {
+  padding: 40px 8px 24px;
+  text-align: center;
+}
+
+.logo {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 30px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #3d2b1c;
+}
+
+.logo small {
+  display: block;
+  font-family: var(--font-body), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  margin-top: 6px;
+  color: var(--ink-soft);
+}
+
+.hero {
+  text-align: center;
+  padding: 8px 0 32px;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 9vw, 64px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #3d2b1c;
+}
+
+.hero p {
+  margin: 10px 0 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 20px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Section index ---------- */
+
+.index {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding-bottom: 32px;
+}
+
+.index a {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid rgba(61, 43, 28, 0.35);
+  border-radius: 999px;
+  color: #3d2b1c;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(253, 247, 236, 0.5);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.index a:hover {
+  background: #3d2b1c;
+  color: var(--cream);
+}
+
+/* ---------- Sheets ---------- */
+
+.sheets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+}
+
+.sheet {
+  background: var(--cream);
+  border-radius: 6px;
+  padding: 32px 26px 36px;
+  box-shadow: 0 10px 28px rgba(48, 33, 20, 0.12);
+  scroll-margin-top: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sheet::after {
+  /* echoes the thin inner rule on the printed sheets */
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(181, 121, 58, 0.18);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.sheet > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sheet h2 {
+  font-size: clamp(28px, 6vw, 38px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #3d2b1c;
+  margin-bottom: 20px;
+}
+
+.block + .block {
+  margin-top: 26px;
+}
+
+.block h3 {
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+/* list block: name + description + price */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 16px;
+  row-gap: 4px;
+}
+
+.item .name {
+  font-weight: 600;
+  color: #5a3d22;
+}
+
+.item .price {
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.item .desc {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  max-width: 46ch;
+}
+
+/* compact block: dotted leader rows, two columns on wide screens */
+
+.compact {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 32px;
+  row-gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .compact.two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.row .leader {
+  flex: 1;
+  border-bottom: 1px dotted rgba(122, 99, 80, 0.5);
+  transform: translateY(-3px);
+}
+
+.row .price {
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* matrix block: name + N price columns */
+
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.matrix th {
+  font-family: var(--font-body), sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: right;
+  padding-bottom: 8px;
+  white-space: nowrap;
+}
+
+.matrix th:first-child {
+  text-align: left;
+}
+
+.matrix td {
+  padding: 6px 0;
+  border-bottom: 1px dotted rgba(122, 99, 80, 0.3);
+}
+
+.matrix td:not(:first-child) {
+  text-align: right;
+  padding-left: 18px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* note block (Sauna Ritual) */
+
+.note {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.note .amount {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 26px;
+  color: var(--accent);
+}
+
+.note p {
+  margin: 10px auto 0;
+  max-width: 42ch;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Footer ---------- */
+
+.foot {
+  text-align: center;
+  padding: 40px 8px 0;
+  color: #3d2b1c;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.foot .rule {
+  width: 48px;
+  height: 1px;
+  background: rgba(61, 43, 28, 0.4);
+  margin: 0 auto 18px;
+}
