@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ankhe",
+  "compatibility_date": "2026-07-30",
+  // No "main" entry: this Worker serves the static export in out/ and nothing else.
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
