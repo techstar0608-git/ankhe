@@ -15,7 +15,6 @@ export const bookingHref = BOOKING_URL ?? PHONE_HREF;
 export const EMAIL = "contact@ankhewellness.com.au";
 export const MAPS_URL = "https://maps.app.goo.gl/Dcwnd7rhSibvuixe8";
 
-export const SITE_URL = "https://www.ankhewellness.com.au";
 
 /** Official social profiles. */
 export const FACEBOOK_URL = "https://www.facebook.com/ankhewellness";
