@@ -1,31 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import SiteFooter from "@/components/SiteFooter";
 import Masthead from "@/components/Masthead";
 import SectionNav from "@/components/SectionNav";
+import SiteFooter from "@/components/SiteFooter";
 import { serviceSections, type Category } from "@/data/priceList";
-
 
 function CategoryBlock({ category }: { category: Category }) {
   if (category.kind === "list") {
     return (
-      <div className="category">
+      <div className={`category${category.midPrice ? " mid-price" : ""}`}>
         {category.title && <h3>{category.title}</h3>}
         {category.items.map((item) => (
-          <div className="menu-item" key={item.name}>
-            <div className="item-top">
-              <div className="item-name">
-                {item.name}
-                {item.signature && (
-                  <span className="signature" aria-label="Signature">
-                    {" "}♕
-                  </span>
-                )}
-              </div>
-              <div className="item-value">
-                <strong>{item.price}</strong>
-                {item.meta && <small>{item.meta}</small>}
-              </div>
+          <div className={`menu-item${item.desc ? " has-desc" : ""}`} key={item.name}>
+            <div className="item-name">
+              {item.name}
+              {item.signature && <span aria-label="Signature"> ♕</span>}
+            </div>
+            <div className="item-value">
+              <strong>{item.price}</strong>
+              {item.meta && <small>{item.meta}</small>}
             </div>
             {item.desc && <p className="desc">{item.desc}</p>}
           </div>
@@ -37,66 +30,63 @@ function CategoryBlock({ category }: { category: Category }) {
   return (
     <div className="category">
       <h3>{category.title}</h3>
-      {category.columns ? (
-        <div className="price-legend" aria-hidden="true">
-          <span>Service</span>
-          <span>{category.columns[0]}</span>
-          <span>{category.columns[1]}</span>
-        </div>
-      ) : (
-        <div className="single-legend" aria-hidden="true">
-          {category.singleColumnLabel}
-        </div>
-      )}
+      <div className="price-legend" aria-hidden="true">
+        <span />
+        <span>{category.columns[0]}</span>
+        <span>{category.columns[1]}</span>
+      </div>
       {category.rows.map((row) => (
         <div className="menu-item multi" key={row.name}>
           <div className="item-name">{row.name}</div>
           {row.values.map((v, i) => (
             <div className="price" key={i}>
-              {v ?? "—"}
+              {v ?? <span aria-label="not available">—</span>}
+              {i === 1 && row.note && <small>{row.note}</small>}
             </div>
           ))}
-          {row.desc && <p className="desc">{row.desc}</p>}
         </div>
       ))}
     </div>
   );
 }
 
+const total = String(serviceSections.length).padStart(2, "0");
+
 export default function PriceListPage() {
   return (
     <main className="app">
       <Masthead />
 
-      <div className="hero">
-        <div className="eyebrow">Rituals · Beauty · Restoration</div>
+      <div className="pl-hero">
+        <div className="pl-kicker">Our Services &amp; Pricing</div>
         <h1>Price List</h1>
-        <p>Thoughtfully curated treatments for your moments of calm.</p>
+        <p className="pl-intro">Discover your moment of calm, from signature Headspa rituals to beauty treatments.</p>
+        <p className="pl-browse">Browse the menu below</p>
       </div>
 
       <SectionNav
+        variant="pills"
         label="Service categories"
-        links={serviceSections.map((s) => ({ id: s.id, label: s.nav }))}
+        links={serviceSections.map((s) => ({ id: s.id, label: [s.nav] }))}
       />
 
       {serviceSections.map((s, i) => (
         <section className="service-section" id={s.id} key={s.id} aria-labelledby={`${s.id}-title`}>
-          <div className="section-head">
-            <div>
-              <div className="eyebrow">An Khê · Wellness Menu</div>
-              <h2 id={`${s.id}-title`}>{s.title}</h2>
-              <p>{s.subtitle}</p>
-            </div>
-            <span className="number" aria-hidden="true">
-              {String(i + 1).padStart(2, "0")}
+          <div className="section-meta">
+            <span>An Khê · Price List</span>
+            <span className="count">
+              {String(i + 1).padStart(2, "0")} / {total}
             </span>
           </div>
+          <h2 id={`${s.id}-title`}>{s.title}</h2>
+          <p className="section-sub">{s.subtitle}</p>
           <div className="photo">
             <Image
               src={s.image}
               alt={`${s.title} at An Khê Wellness`}
               fill
-              sizes="(max-width: 510px) 100vw, 466px"
+              sizes="(max-width: 510px) 90vw, 460px"
+              style={s.imagePosition ? { objectPosition: s.imagePosition } : undefined}
               priority={i === 0}
             />
           </div>
@@ -106,25 +96,18 @@ export default function PriceListPage() {
         </section>
       ))}
 
-      <aside className="offer-teaser">
-        <div className="eyebrow">A little something extra</div>
-        <h2>Special Offers</h2>
-        <p>Discover our latest promotions for moments of relaxation, together or just for you.</p>
-        <Link href="/promotions">View Special Offers →</Link>
-      </aside>
-
-      <p className="note">
-        Prices in AUD. Please confirm current availability and prices with our team when booking.
-      </p>
+      <div className="offer-wrap">
+        <aside className="offer-banner">
+          <div className="offer-kicker">A little something extra</div>
+          <h2>Special Offers</h2>
+          <p>Explore our current promotions and share a little more calm.</p>
+          <Link href="/promotions" className="offer-cta">
+            View Special Offers&nbsp;&nbsp;→
+          </Link>
+        </aside>
+      </div>
 
       <SiteFooter />
-
-      <div className="bottom-bar">
-        <Link href="/promotions">Special Offers</Link>
-        <a href="#headspa" className="primary">
-          Explore Services ↑
-        </a>
-      </div>
     </main>
   );
 }

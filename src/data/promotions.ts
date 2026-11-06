@@ -1,6 +1,6 @@
 /**
- * Promotions content — source: an-khe-promotions-fixed.html + Figma
- * (file M7eL5WFVyepkqr6QNGZ7Wt, page "01 · Promotions").
+ * Promotions content — source of truth: Figma file M7eL5WFVyepkqr6QNGZ7Wt,
+ * page "01 · Promotions" (node 1:2).
  */
 
 export type Tier = { label: string; value: string; featured?: boolean };
@@ -16,87 +16,82 @@ export type Ritual = {
 
 export type Promotion = {
   id: string;
-  nav: string;
+  /** Tab label; lines rendered with <br/>. */
+  nav: string[];
   kicker: string;
-  /** Lines of the headline; rendered with <br/> between them. */
+  /** Headline lines; rendered with <br/>. */
   title: string[];
   lead: string;
-  image: { src: string; alt: string; width: number; height: number; position: string };
-  eyebrow: string;
+  image: { src: string; alt: string; width: number; height: number; displayHeight: number };
+  heading: string;
   supporting?: string;
   tiers?: Tier[];
   rituals?: Ritual[];
+  serumNote?: { title: string; text: string };
   fineprint?: string;
   cta: string;
-  note?: string;
-  alt?: boolean;
 };
-
-const off = (n: number) => `${n}% OFF`;
 
 export const promotions: Promotion[] = [
   {
     id: "calm-together",
-    nav: "Calm Together",
+    nav: ["Calm", "Together"],
     kicker: "Group booking offer",
     title: ["Calm Together"],
     lead: "Bring your mum, your bestie or your work crew. The best moments of calm are the ones we share.",
     image: {
       src: "/promotions/calm-together.webp",
-      alt: "Three friends enjoying their spa day",
-      width: 1050,
-      height: 591,
-      position: "center 39%",
+      alt: "Three friends enjoying their spa day at An Khê",
+      width: 800,
+      height: 450,
+      displayHeight: 204,
     },
-    eyebrow: "Better together",
-    supporting: "Enjoy a little extra relaxation with special group savings across all services.",
+    heading: "Better together",
+    supporting: "Enjoy special savings when you visit with friends or family.",
     tiers: [
-      { label: "2 guests", value: off(10) },
-      { label: "3 guests", value: off(15), featured: true },
-      { label: "5+ guests", value: off(20) },
+      { label: "2 guests", value: "10%" },
+      { label: "3 guests", value: "15%", featured: true },
+      { label: "5+ guests", value: "20%" },
     ],
-    fineprint:
-      "All services · Cash payments · Valid 18 Oct – 31 Dec 2026. Please confirm eligibility when booking.",
+    fineprint: "All services · Cash payments · 18 Oct – 31 Dec 2026",
     cta: "Enquire About Group Bookings",
   },
   {
     id: "gift-cards",
-    nav: "Gift Cards",
+    nav: ["Gift Cards"],
     kicker: "Gift card offer",
     title: ["A Gift of Grace"],
-    lead: "For mum, a best friend, a colleague — or anyone who deserves a moment just for themselves.",
+    lead: "For mum, a friend, a colleague — or anyone who deserves a beautiful moment to unwind.",
     image: {
       src: "/promotions/gift-cards.webp",
-      alt: "A daughter embracing her mother and presenting an An Khê Wellness gift card",
-      width: 1050,
-      height: 591,
-      position: "45% 38%",
+      alt: "An Khê Wellness “A Gift of Calm” gift card on raked sand with spa stones",
+      width: 800,
+      height: 601,
+      displayHeight: 240,
     },
-    eyebrow: "Gift more, save up to 20%",
-    supporting: "Share the joy of a little time out with gift cards for the people who matter.",
+    heading: "Gift more, save up to 20%",
+    supporting: "More thoughtful gifts, more special savings.",
     tiers: [
-      { label: "2 gift cards", value: off(10) },
-      { label: "3 gift cards", value: off(15), featured: true },
-      { label: "5+ gift cards", value: off(20) },
+      { label: "2 cards", value: "10%" },
+      { label: "3 cards", value: "15%", featured: true },
+      { label: "5+ cards", value: "20%" },
     ],
     cta: "Enquire About Gift Cards",
-    note: "Please check gift card terms and offer availability with our team before purchase.",
-    alt: true,
   },
   {
     id: "summer-glow",
-    nav: "Summer Glow & Flow",
-    kicker: "Seasonal wellness rituals",
-    title: ["Summer Glow", "& Flow"],
-    lead: "Two thoughtfully curated rituals to refresh your body, rejuvenate your skin and ease into summer.",
+    nav: ["Summer", "Glow & Flow"],
+    kicker: "Summer wellness special",
+    title: ["Summer", "Glow & Flow"],
+    lead: "Two thoughtfully curated rituals to refresh the body, rejuvenate the skin and ease into summer.",
     image: {
       src: "/promotions/summer-glow.webp",
-      alt: "Relaxing head spa treatment with warm running water",
-      width: 580,
-      height: 410,
-      position: "center 42%",
+      alt: "Synergie Skin Super Serum+ facial and hot stone body massage",
+      width: 800,
+      height: 533,
+      displayHeight: 204,
     },
-    eyebrow: "Choose your summer ritual",
+    heading: "Choose your summer ritual",
     rituals: [
       {
         name: "Refresh Ritual",
@@ -119,6 +114,10 @@ export const promotions: Promotion[] = [
         featured: true,
       },
     ],
+    serumNote: {
+      title: "Synergie Skin",
+      text: "Both rituals include a Glow Facial with Synergie SuperSerum+.",
+    },
     cta: "Enquire & Book",
   },
 ];

@@ -1,28 +1,27 @@
 import type { Metadata } from "next";
-import { Cormorant, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID = "G-V7BRW8ZCS5";
 
-/* Figma type spec (nodes 97:40 / 97:45): headings Cormorant, body Manrope. */
-const display = Cormorant({
+/* Figma type spec (file M7eL5WFVyepkqr6QNGZ7Wt): headings Cormorant Garamond, body Inter. */
+const display = Cormorant_Garamond({
   subsets: ["latin", "vietnamese"],
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["400", "500"],
   variable: "--font-display",
 });
 
-const body = Manrope({
+const body = Inter({
   subsets: ["latin", "vietnamese"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-body",
 });
 
 export const metadata: Metadata = {
   title: "Price List — An Khê Wellness",
   description:
-    "Bảng giá dịch vụ An Khê Wellness: head spa, body rituals, facial, nails, lashes, waxing và sauna.",
+    "An Khê Wellness price list: head spa, relaxation massage, facial, skin treatments, nails, lashes and waxing.",
 };
 
 export default function RootLayout({

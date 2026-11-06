@@ -1,6 +1,6 @@
 /**
- * Price list content — source: an-khe-mobile-price-list.html (designer handoff,
- * matches Figma). Edit prices/durations here; the page renders from this file.
+ * Price list content — source of truth: Figma file M7eL5WFVyepkqr6QNGZ7Wt,
+ * page "02 · Price List" (node 14:9). Edit prices/durations here.
  */
 
 export type Item = {
@@ -16,17 +16,22 @@ export type Item = {
 export type MatrixRow = {
   name: string;
   values: [string | null, string | null];
-  desc?: string;
+  /** Small note under the second price, e.g. "2 weeks". */
+  note?: string;
 };
 
 export type Category =
-  | { kind: "list"; title?: string; items: Item[] }
+  | {
+      kind: "list";
+      title?: string;
+      items: Item[];
+      /** Price sits in the first price column (Figma: Lash Lifts). */
+      midPrice?: boolean;
+    }
   | {
       kind: "matrix";
       title: string;
-      /** Column headers. Omit to show only the second header (e.g. "Shellac"). */
-      columns?: [string, string];
-      singleColumnLabel?: string;
+      columns: [string, string];
       rows: MatrixRow[];
     };
 
@@ -36,6 +41,8 @@ export type ServiceSection = {
   title: string;
   subtitle: string;
   image: string;
+  /** CSS object-position matching the Figma crop. */
+  imagePosition?: string;
   categories: Category[];
 };
 
@@ -45,12 +52,13 @@ export const serviceSections: ServiceSection[] = [
   {
     id: "headspa",
     nav: "Headspa",
-    title: "Headspa",
-    subtitle: "Signature rituals",
+    title: "Head Spa",
+    subtitle: "Signature Rituals",
     image: "/price-list/headspa.webp",
     categories: [
       {
         kind: "list",
+        title: "Signature Head Spa",
         items: [
           {
             name: "Japanese Signature",
@@ -77,9 +85,9 @@ export const serviceSections: ServiceSection[] = [
   },
   {
     id: "massage",
-    nav: "Relaxation Massage",
+    nav: "Massage",
     title: "Relaxation Massage",
-    subtitle: "Pause, restore, unwind",
+    subtitle: "Pause · Restore · Unwind",
     image: "/price-list/massage.webp",
     categories: [
       {
@@ -87,10 +95,10 @@ export const serviceSections: ServiceSection[] = [
         title: "Body Rituals",
         items: [
           { name: "Body Massage", price: "$50", meta: min(30), desc: "A short pause for a tired body. A 30-minute body massage with warmed hot stones." },
-          { name: "Foot Spa Ritual", price: "$55", meta: min(30), desc: "A restorative foot treatment with scrub, massage, steam and mask, leaving tired feet soft, smooth and refreshed." },
-          { name: "Detox Full Body Massage", price: "$85", meta: min(60), desc: "A soothing blend of gentle massage, hot stones and warm towel therapy to ease muscle tension, relieve fatigue and promote deep relaxation." },
-          { name: "Deep Tissue Massage", price: "$95", meta: min(60), desc: "A targeted massage using slow, firm pressure to release deep muscle tension, ease stiffness and relieve discomfort." },
-          { name: "Deep Detox Ritual Massage", signature: true, price: "$125", meta: min(90), desc: "Our most-loved ritual combines firm, targeted full-body massage, warm stones and a soothing herbal foot bath for deep relaxation." },
+          { name: "Foot Spa Ritual", price: "$55", meta: min(30), desc: "Foot scrub, massage, steam and mask to soften, smooth and refresh tired feet." },
+          { name: "Detox Full Body Massage", price: "$85", meta: min(60), desc: "Gentle massage, hot stones and warm towel therapy to ease tension, relieve fatigue and promote relaxation." },
+          { name: "Deep Tissue Massage", price: "$95", meta: min(60), desc: "A firm, targeted massage to release deep muscle tension, ease stiffness and relieve discomfort." },
+          { name: "Deep Detox Ritual Massage", signature: true, price: "$125", meta: min(90), desc: "Our most-loved ritual combines full-body massage, warm stones and a herbal foot bath for deep relaxation." },
           { name: "Bridal Body Glow Ritual", price: "$250", meta: min(120), desc: "Full body scrub, hydrating body mask and massage for soft, radiant bridal glow." },
         ],
       },
@@ -104,6 +112,7 @@ export const serviceSections: ServiceSection[] = [
           { name: "Detox Foot Massage + Herbal Bath", price: "$30", meta: min(20) },
           { name: "Hair Styling: Straightening Hair", price: "$30", meta: min(20) },
           { name: "Hair Styling: Curly Hair", price: "$30", meta: min(20) },
+          { name: "Back Scrub", price: "$50", meta: min(20) },
         ],
       },
     ],
@@ -112,41 +121,43 @@ export const serviceSections: ServiceSection[] = [
     id: "facial",
     nav: "Facial",
     title: "Facial",
-    subtitle: "Skin rituals",
+    subtitle: "Skin Rituals",
     image: "/price-list/facial.webp",
     categories: [
       {
         kind: "list",
+        title: "Facial Treatments",
         items: [
           { name: "Basic Facial", price: "$90", meta: min(60), desc: "Cleanse face, exfoliate, extract blackheads, facial massage, mask application, moisturiser & sunscreen, shoulder–neck–head massage." },
-          { name: "Serum Cocktail Infusion", price: "$160", meta: min(75), desc: "A targeted skin infusion treatment featuring a customised blend of three serums selected to support skin vitality and glow." },
+          { name: "Serum Cocktail Infusion", price: "$160", meta: min(75), desc: "A customised blend of three serums to boost skin vitality and glow." },
           { name: "Hollywood Facial", price: "$180", meta: min(75), desc: "Enhanced hydration for an instantly refreshed glow." },
-          { name: "Ceya RF Facial", price: "$180", meta: min(75), desc: "A gentle radiofrequency treatment that warms the skin to support collagen activity and promote a refreshed, youthful-looking complexion." },
-          { name: "Carbon Laser Facial", price: "$250", meta: min(90), desc: "A revitalising blend of carbon laser technology, enzyme exfoliation and deep hydration to purify skin, refine texture and restore a natural glow." },
+          { name: "Ceya RF Facial", price: "$180", meta: min(75), desc: "A gentle radiofrequency treatment to support collagen activity and promote youthful-looking skin." },
+          { name: "Carbon Laser Facial", price: "$250", meta: min(90), desc: "Carbon laser, enzyme exfoliation and deep hydration to purify, smooth and restore skin’s natural glow." },
         ],
       },
     ],
   },
   {
     id: "skin",
-    nav: "Skin Treatments",
+    nav: "Skin",
     title: "Skin Treatments",
-    subtitle: "Advanced skin care",
+    subtitle: "Advanced Skin Care",
     image: "/price-list/skin.webp",
     categories: [
       {
         kind: "list",
+        title: "Advanced Treatments",
         items: [
           { name: "Skin Needling Full Face", price: "$250", meta: min(90) },
           { name: "Skin Needling Rejuvenation", price: "$250", meta: min(90) },
           { name: "Cold Plasma Needling", price: "$350", meta: min(90) },
           { name: "Scar Refinement Needling", price: "$450", meta: min(90) },
+          { name: "Meso Therapy", price: "$450", meta: min(120) },
+          { name: "HIFU", price: "$550", meta: min(120) },
           { name: "Plasma Forehead", price: "$600", meta: min(45) },
           { name: "Plasma Eye Area", price: "$750", meta: min(45) },
           { name: "Plasma Chin", price: "$950", meta: min(45) },
           { name: "Plasma Full Face Renewal", price: "$1,800", meta: "5 hr" },
-          { name: "Meso Therapy", price: "$450", meta: min(120) },
-          { name: "HIFU", price: "$550", meta: min(120) },
         ],
       },
     ],
@@ -155,38 +166,39 @@ export const serviceSections: ServiceSection[] = [
     id: "nails",
     nav: "Nails",
     title: "Nails",
-    subtitle: "Manicure & nail care",
+    subtitle: "Manicure · Gel · Acrylic",
     image: "/price-list/nails.webp",
+    imagePosition: "center 44%",
     categories: [
       {
         kind: "matrix",
         title: "Manicure",
-        columns: ["Standard Colour", "Shellac"],
+        columns: ["Standard", "Shellac"],
         rows: [
           { name: "Buff, Shape & Polish (Hands)", values: ["$15", "$25"] },
           { name: "Buff, Shape & Polish (Feet)", values: ["$20", "$30"] },
           { name: "Manicure", values: ["$25", "$35"] },
-          { name: "Buff, Shape & Polish Hands & Feet", values: ["$35", "$45"] },
           { name: "Spa Pedicure", values: ["$28", "$36"] },
+          { name: "Buff, Shape & Polish (Hands & Feet)", values: ["$35", "$45"] },
           { name: "Manicure & Spa Pedicure", values: ["$50", "$75"] },
         ],
       },
       {
         kind: "matrix",
         title: "Builder Gel",
-        singleColumnLabel: "Shellac",
+        columns: ["Standard", "Shellac"],
         rows: [
-          { name: "Builder Gel Overlay (Natural Nails)", values: [null, "$55"] },
+          { name: "Removal", values: [null, "$20"] },
+          { name: "Builder Gel Infill", values: [null, "$55"] },
+          { name: "Builder Gel Overlay (natural nails)", values: [null, "$55"] },
           { name: "Builder Gel Full Set", values: [null, "$65"] },
           { name: "Builder Gel Extensions", values: [null, "$70"] },
-          { name: "Builder Gel Infill", values: [null, "$55"] },
-          { name: "Removal", values: [null, "$20"] },
         ],
       },
       {
         kind: "matrix",
         title: "Acrylic",
-        columns: ["Standard Colour", "Shellac"],
+        columns: ["Standard", "Shellac"],
         rows: [
           { name: "Acrylic Infill", values: ["$35", "$45"] },
           { name: "Acrylic Full Set", values: ["$50", "$60"] },
@@ -197,7 +209,7 @@ export const serviceSections: ServiceSection[] = [
       {
         kind: "matrix",
         title: "Gel Powder",
-        columns: ["Standard Colour", "Shellac"],
+        columns: ["Standard", "Shellac"],
         rows: [
           { name: "Gel Powder Infill", values: ["$40", null] },
           { name: "Gel Powder Full Set", values: ["$55", null] },
@@ -230,7 +242,7 @@ export const serviceSections: ServiceSection[] = [
     id: "lashes",
     nav: "Lashes",
     title: "Lashes",
-    subtitle: "Lash extensions & lifts",
+    subtitle: "Lash Extensions · Lifts",
     image: "/price-list/lashes.webp",
     categories: [
       {
@@ -238,19 +250,20 @@ export const serviceSections: ServiceSection[] = [
         title: "Lash Extensions",
         columns: ["Full Set", "Refill"],
         rows: [
-          { name: "Classic", values: ["$80", "$50"], desc: "Refill: 2 weeks" },
+          { name: "Classic", values: ["$80", "$50"], note: "2 weeks" },
           { name: "Hybrid", values: ["$100", "$60"] },
           { name: "Volume", values: ["$120", "$70"] },
           { name: "Wispy Volume", values: ["$130", "$80"] },
           { name: "Wet Look Set", values: ["$130", "$80"] },
-          { name: "Anime Lashes", values: ["$140", "$85"] },
           { name: "Fox Eye Set", values: ["$130", "$80"] },
+          { name: "Anime Lashes", values: ["$140", "$85"] },
           { name: "Mega Volume", values: ["$150", "$90"] },
         ],
       },
       {
         kind: "list",
         title: "Lash Lifts",
+        midPrice: true,
         items: [
           { name: "Lash Lift", price: "$80" },
           { name: "Lash Lift + Tint", price: "$100" },
@@ -261,8 +274,8 @@ export const serviceSections: ServiceSection[] = [
         title: "Add-ons",
         items: [
           { name: "Lash Bath", price: "$10" },
-          { name: "Lash Removal", price: "$20" },
           { name: "Coloured Lashes", price: "$15" },
+          { name: "Lash Removal", price: "$20" },
           { name: "Eyebrow Tint", price: "$20" },
           { name: "Bottom Lashes", price: "$20" },
         ],
@@ -273,8 +286,9 @@ export const serviceSections: ServiceSection[] = [
     id: "waxing",
     nav: "Waxing",
     title: "Waxing",
-    subtitle: "Smooth skin, gentle care",
+    subtitle: "Smooth Skin · Gentle Care",
     image: "/price-list/waxing.webp",
+    imagePosition: "43% 83%",
     categories: [
       {
         kind: "list",

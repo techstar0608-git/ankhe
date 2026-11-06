@@ -2,13 +2,21 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Link = { id: string; label: string };
+type Link = { id: string; label: string[] };
 
 /**
- * Sticky, horizontally swipeable pill nav. Highlights the section in view and
- * keeps the active pill scrolled into the visible strip.
+ * Sticky section nav. `pills` = Price List chips (swipeable, edge arrow — Figma 14:18);
+ * `tabs` = Promotions buttons (Figma 1:9).
  */
-export default function SectionNav({ links, label }: { links: Link[]; label: string }) {
+export default function SectionNav({
+  links,
+  label,
+  variant,
+}: {
+  links: Link[];
+  label: string;
+  variant: "pills" | "tabs";
+}) {
   const [active, setActive] = useState(links[0]?.id ?? "");
   const navRef = useRef<HTMLElement>(null);
 
@@ -40,27 +48,34 @@ export default function SectionNav({ links, label }: { links: Link[]; label: str
   }, [links]);
 
   useEffect(() => {
-    const pill = navRef.current?.querySelector<HTMLAnchorElement>(`a[href="#${active}"]`);
     const nav = navRef.current;
+    const pill = nav?.querySelector<HTMLAnchorElement>(`a[href="#${active}"]`);
     if (!pill || !nav) return;
     const left = pill.offsetLeft - (nav.clientWidth - pill.clientWidth) / 2;
     nav.scrollTo({ left, behavior: "smooth" });
   }, [active]);
 
   return (
-    <div className="nav-shell">
+    <div className={`nav-shell nav-${variant}`}>
       <nav className="nav" aria-label={label} ref={navRef}>
         {links.map((l) => (
           <a
             key={l.id}
             href={`#${l.id}`}
-            className={`nav-pill${l.id === active ? " is-active" : ""}`}
+            className={`nav-item${l.id === active ? " is-active" : ""}`}
             aria-current={l.id === active ? "true" : undefined}
           >
-            {l.label}
+            {l.label.map((line, i) => (
+              <span key={i}>{line}</span>
+            ))}
           </a>
         ))}
       </nav>
+      {variant === "pills" && (
+        <span className="nav-edge" aria-hidden="true">
+          ›
+        </span>
+      )}
     </div>
   );
 }
