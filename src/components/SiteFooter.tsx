@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { siteLinks } from "@/data/nav";
 import { FACEBOOK_URL, INSTAGRAM_URL, BOOKING_URL, EMAIL, MAPS_URL, PHONE_DISPLAY, PHONE_HREF } from "@/data/site";
 
 /** Footer from Figma node 45:302 ("Group 82") — shared by both pages. */
@@ -58,11 +59,17 @@ export default function SiteFooter() {
           <nav className="footer-links" aria-label="Useful links">
             <h3>Useful Links</h3>
             <div className="footer-rule left" aria-hidden="true" />
-            {/* ankhewellness.com.au serves this site, so Home is the price list. TODO: About Us page. */}
-            <Link href="/">Home</Link>
-            <Link href="/">About Us</Link>
-            <Link href="/">Services</Link>
-            <Link href="/promotions">Promotion</Link>
+            {siteLinks.map((l) =>
+              l.href ? (
+                <Link key={l.label} href={l.href}>
+                  {l.label}
+                </Link>
+              ) : (
+                <span key={l.label} aria-disabled="true">
+                  {l.label}
+                </span>
+              ),
+            )}
           </nav>
         </div>
 
