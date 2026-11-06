@@ -1,110 +1,130 @@
 import Image from "next/image";
-import { sections } from "@/data/sections";
+import Link from "next/link";
+import SiteFooter from "@/components/SiteFooter";
+import Masthead from "@/components/Masthead";
+import SectionNav from "@/components/SectionNav";
+import { serviceSections, type Category } from "@/data/priceList";
+
+
+function CategoryBlock({ category }: { category: Category }) {
+  if (category.kind === "list") {
+    return (
+      <div className="category">
+        {category.title && <h3>{category.title}</h3>}
+        {category.items.map((item) => (
+          <div className="menu-item" key={item.name}>
+            <div className="item-top">
+              <div className="item-name">
+                {item.name}
+                {item.signature && (
+                  <span className="signature" aria-label="Signature">
+                    {" "}♕
+                  </span>
+                )}
+              </div>
+              <div className="item-value">
+                <strong>{item.price}</strong>
+                {item.meta && <small>{item.meta}</small>}
+              </div>
+            </div>
+            {item.desc && <p className="desc">{item.desc}</p>}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="category">
+      <h3>{category.title}</h3>
+      {category.columns ? (
+        <div className="price-legend" aria-hidden="true">
+          <span>Service</span>
+          <span>{category.columns[0]}</span>
+          <span>{category.columns[1]}</span>
+        </div>
+      ) : (
+        <div className="single-legend" aria-hidden="true">
+          {category.singleColumnLabel}
+        </div>
+      )}
+      {category.rows.map((row) => (
+        <div className="menu-item multi" key={row.name}>
+          <div className="item-name">{row.name}</div>
+          {row.values.map((v, i) => (
+            <div className="price" key={i}>
+              {v ?? "—"}
+            </div>
+          ))}
+          {row.desc && <p className="desc">{row.desc}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function PriceListPage() {
   return (
-    <main className="page">
-      {/* Header mirrors Figma node 233:175 — hamburger menu intentionally hidden. */}
-      <header className="masthead">
-        <Image
-          className="brand"
-          src="/logo-ankhe.svg"
-          alt="An Khê — Where calm flows naturally"
-          width={189}
-          height={45}
-          priority
-        />
-        <Image
-          className="search"
-          src="/icon-search.svg"
-          alt=""
-          width={20}
-          height={19}
-          aria-hidden="true"
-        />
-      </header>
+    <main className="app">
+      <Masthead />
 
-      <div className="sheets">
-        {sections.map((s, i) => (
-          <section className="sheet" id={s.id} key={s.id}>
+      <div className="hero">
+        <div className="eyebrow">Rituals · Beauty · Restoration</div>
+        <h1>Price List</h1>
+        <p>Thoughtfully curated treatments for your moments of calm.</p>
+      </div>
+
+      <SectionNav
+        label="Service categories"
+        links={serviceSections.map((s) => ({ id: s.id, label: s.nav }))}
+      />
+
+      {serviceSections.map((s, i) => (
+        <section className="service-section" id={s.id} key={s.id} aria-labelledby={`${s.id}-title`}>
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">An Khê · Wellness Menu</div>
+              <h2 id={`${s.id}-title`}>{s.title}</h2>
+              <p>{s.subtitle}</p>
+            </div>
+            <span className="number" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+          </div>
+          <div className="photo">
             <Image
-              src={s.src}
-              alt={s.title}
-              width={1500}
-              height={2123}
-              sizes="(max-width: 420px) 100vw, 420px"
+              src={s.image}
+              alt={`${s.title} at An Khê Wellness`}
+              fill
+              sizes="(max-width: 510px) 100vw, 466px"
               priority={i === 0}
             />
-          </section>
-        ))}
-      </div>
+          </div>
+          {s.categories.map((c, ci) => (
+            <CategoryBlock category={c} key={ci} />
+          ))}
+        </section>
+      ))}
 
-      <div className="cta">
-        <a className="pill" href="#headspa">
-          BEGIN YOUR JOURNEY
+      <aside className="offer-teaser">
+        <div className="eyebrow">A little something extra</div>
+        <h2>Special Offers</h2>
+        <p>Discover our latest promotions for moments of relaxation, together or just for you.</p>
+        <Link href="/promotions">View Special Offers →</Link>
+      </aside>
+
+      <p className="note">
+        Prices in AUD. Please confirm current availability and prices with our team when booking.
+      </p>
+
+      <SiteFooter />
+
+      <div className="bottom-bar">
+        <Link href="/promotions">Special Offers</Link>
+        <a href="#headspa" className="primary">
+          Explore Services ↑
         </a>
       </div>
-
-      {/* Figma nodes 229:97 → 229:122 */}
-      <footer className="foot">
-        <div className="foot-inner">
-          <h2>More information</h2>
-
-          <nav className="foot-links" aria-label="More information">
-            <a href="#headspa">Search</a>
-            <a href="#headspa">Book an appointment</a>
-            <a href="#headspa">FAQ</a>
-          </nav>
-
-          <p className="foot-tagline">
-            Welcome to An Khê Wellness.
-            <br />
-            Where calm flows naturally.
-          </p>
-
-          <address className="foot-contact">
-            <div>6-7 / 104 John St Cabramatta NSW 2166</div>
-            <div>
-              <a href="https://wa.me/84448289368">(+84) 448 289 368 (WhatsApp)</a>
-            </div>
-            <div>
-              <a href="mailto:ankhe.wellness@gmail.com">ankhe.wellness@gmail.com</a>
-            </div>
-          </address>
-
-          {/* Social row + WhatsApp badge share one centre line in Figma (238:255 / 238:260) */}
-          <div className="foot-social-row">
-            <Image
-              className="foot-social"
-              src="/social.svg"
-              alt="Facebook, Instagram"
-              width={72}
-              height={27}
-            />
-            <a
-              className="wa-badge"
-              href="https://wa.me/84448289368"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chat với An Khê Wellness trên WhatsApp"
-            >
-              {/* Animated GIF is the image fill of Figma node 238:260 — used as-is. */}
-              <Image
-                src="/whatsapp.gif"
-                alt=""
-                width={138}
-                height={138}
-                unoptimized
-                aria-hidden="true"
-              />
-            </a>
-          </div>
-
-          <p className="copy">
-            © 2026 Copyright Designed by S.T.A.R Marketing &amp; Tech
-          </p>
-        </div>
-      </footer>
     </main>
   );
 }

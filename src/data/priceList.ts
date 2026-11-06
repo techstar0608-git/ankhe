@@ -1,224 +1,182 @@
 /**
- * Price list content transcribed from the An Khe Wellness Figma file
- * (page "iPhone 14 & 15 Pro - 2", node 229:2).
+ * Price list content — source: an-khe-mobile-price-list.html (designer handoff,
+ * matches Figma). Edit prices/durations here; the page renders from this file.
  */
 
-export type PriceRow = {
+export type Item = {
   name: string;
-  desc?: string;
   price: string;
+  /** Duration or unit, e.g. "60 min", "per nail". */
+  meta?: string;
+  desc?: string;
+  signature?: boolean;
 };
 
-/** A row in a table-style block, e.g. NAILS / LASHES with two price columns. */
+/** Table-style rows with two price columns (Nails, Lashes). `null` renders as "—". */
 export type MatrixRow = {
   name: string;
-  values: (string | null)[];
+  values: [string | null, string | null];
+  desc?: string;
 };
 
-export type Block =
-  | { kind: "list"; title?: string; rows: PriceRow[] }
-  | { kind: "matrix"; title?: string; columns: string[]; rows: MatrixRow[] }
-  | { kind: "compact"; title?: string; rows: PriceRow[] }
-  | { kind: "note"; title?: string; text: string };
+export type Category =
+  | { kind: "list"; title?: string; items: Item[] }
+  | {
+      kind: "matrix";
+      title: string;
+      /** Column headers. Omit to show only the second header (e.g. "Shellac"). */
+      columns?: [string, string];
+      singleColumnLabel?: string;
+      rows: MatrixRow[];
+    };
 
-export type PriceSection = {
+export type ServiceSection = {
   id: string;
+  nav: string;
   title: string;
-  blocks: Block[];
+  subtitle: string;
+  image: string;
+  categories: Category[];
 };
 
-export const priceSections: PriceSection[] = [
+const min = (n: number) => `${n} min`;
+
+export const serviceSections: ServiceSection[] = [
   {
     id: "headspa",
+    nav: "Headspa",
     title: "Headspa",
-    blocks: [
+    subtitle: "Signature rituals",
+    image: "/price-list/headspa.webp",
+    categories: [
       {
         kind: "list",
-        rows: [
+        items: [
           {
-            name: "Pure Calm Glow Ritual",
-            desc: "Head spa paired with gentle facial care, refreshing both scalp and complexion together.",
-            price: "$115 / 70 min",
+            name: "Japanese Signature",
+            price: "$99",
+            meta: min(60),
+            desc: "A calming blend of neck & shoulder massage, aromatherapy, head spa and glow facial to ease tension and restore balance.",
           },
           {
-            name: "Pure Calm Sanctuary",
-            desc: "Hands-off head spa featuring jade gua sha and Waterfall Massage, no facial contact.",
-            price: "$115 / 70 min",
+            name: "Luxury Relaxation",
+            price: "$139",
+            meta: min(90),
+            desc: "A calming blend of hot stone body massage, aromatherapy, head spa and glow facial to ease tension, recharge and restore balance.",
           },
           {
-            name: "Tranquil Glow Ritual",
-            desc: "Full head spa and facial combined, with custom serum infusion and steam-enhanced masking.",
-            price: "$165 / 100 min",
+            name: "Ultimate Experience",
+            signature: true,
+            price: "$179",
+            meta: min(120),
+            desc: "A calming blend of hot stone body massage, foot ritual, head spa, glow facial and paraffin hand treatment for ultimate head-to-toe relaxation.",
           },
-          {
-            name: "Soothing Foot Wellness Journey",
-            desc: "Extended foot and calf massage paired with a calming head spa, head-to-toe relief.",
-            price: "$165 / 100 min",
-          },
-          {
-            name: "The An Khê Signature Journey",
-            desc: "Our flagship head-to-toe ritual: full body massage, hot stone, facial, head spa and Waterfall Dome.",
-            price: "$215 / 140 min",
-          },
-        ],
-      },
-      {
-        kind: "compact",
-        title: "Add-On",
-        rows: [
-          { name: "Hair Mask Treatment", price: "$15 / 15 min" },
-          { name: "Blow Dry Styling", price: "$15 / 15 min" },
-          { name: "Facial Mask Upgrade", price: "$15 / 15 min" },
-          { name: "Deep Foot Massage", price: "$20 / 15 min" },
-          { name: "Hand Paraffin Wax Treatment", price: "$20 / 15 min" },
-          { name: "Shoulder & Neck Massage", price: "$20 / 15 min" },
         ],
       },
     ],
   },
   {
-    id: "body-rituals",
-    title: "Body Rituals",
-    blocks: [
+    id: "massage",
+    nav: "Relaxation Massage",
+    title: "Relaxation Massage",
+    subtitle: "Pause, restore, unwind",
+    image: "/price-list/massage.webp",
+    categories: [
       {
         kind: "list",
-        rows: [
-          {
-            name: "Traditional Japanese Massage",
-            desc: "Gentle stretching and pressure point techniques to restore balance and promote relaxation.",
-            price: "$85 / 60 min",
-          },
-          {
-            name: "Hot Oil Relaxation Massage",
-            desc: "A soothing full body massage using warm aromatic oils to ease tension and calm the mind.",
-            price: "$85 / 60 min",
-          },
-          {
-            name: "Deep Tissue Massage",
-            desc: "Targets deep muscle layers to relieve chronic tension, stiffness and muscular discomfort.",
-            price: "$95 / 60 min",
-          },
-          {
-            name: "Infrared Hot Stone Massage",
-            desc: "Combines therapeutic massage with infrared heated stones to relax muscles and improve circulation.",
-            price: "$135 / 90 min",
-          },
-          {
-            name: "An Khê Herbal Compress Massage",
-            desc: "Warm herbal compresses infused with traditional herbs are applied to soothe tired muscles and enhance relaxation.",
-            price: "$145 / 90 min",
-          },
-          {
-            name: "Bridal Body Glow Ritual",
-            desc: "Full body scrub, hydrating body mask and massage for soft, radiant bridal glow.",
-            price: "$250 / 120 min",
-          },
+        title: "Body Rituals",
+        items: [
+          { name: "Body Massage", price: "$50", meta: min(30), desc: "A short pause for a tired body. A 30-minute body massage with warmed hot stones." },
+          { name: "Foot Spa Ritual", price: "$55", meta: min(30), desc: "A restorative foot treatment with scrub, massage, steam and mask, leaving tired feet soft, smooth and refreshed." },
+          { name: "Detox Full Body Massage", price: "$85", meta: min(60), desc: "A soothing blend of gentle massage, hot stones and warm towel therapy to ease muscle tension, relieve fatigue and promote deep relaxation." },
+          { name: "Deep Tissue Massage", price: "$95", meta: min(60), desc: "A targeted massage using slow, firm pressure to release deep muscle tension, ease stiffness and relieve discomfort." },
+          { name: "Deep Detox Ritual Massage", signature: true, price: "$125", meta: min(90), desc: "Our most-loved ritual combines firm, targeted full-body massage, warm stones and a soothing herbal foot bath for deep relaxation." },
+          { name: "Bridal Body Glow Ritual", price: "$250", meta: min(120), desc: "Full body scrub, hydrating body mask and massage for soft, radiant bridal glow." },
         ],
       },
       {
-        kind: "compact",
-        title: "Add-On",
-        rows: [
-          { name: "Scalp Massage", price: "$20 / 15 min" },
-          { name: "Herbal Steam Therapy", price: "$25 / 15 min" },
-          { name: "Infrared Hot Stone Enhancement", price: "$25 / 20 min" },
-          { name: "Deep Foot Massage", price: "$20 / 20 min" },
-          { name: "Hydrating Body Mask", price: "$35 / 20 min" },
-        ],
-      },
-    ],
-  },
-  {
-    id: "skin-treatments",
-    title: "Skin Treatments",
-    blocks: [
-      {
-        kind: "compact",
-        rows: [
-          { name: "Skin Needling Full Face", price: "$250 / 90 min" },
-          { name: "Skin Needling Rejuvenation", price: "$250 / 90 min" },
-          { name: "Cold plasma needling", price: "$350 / 90 min" },
-          { name: "Scar Refinement Needling", price: "$450 / 90 min" },
-          { name: "Plasma Forehead", price: "$600 / 45 min" },
-          { name: "Plasma Eye Area", price: "$750 / 45 min" },
-          { name: "Plasma Chin", price: "$950 / 45 min" },
-          { name: "Plasma Full Face Renewal", price: "$1800 / 5 hr" },
-          { name: "Meso Therapy", price: "$450 / 120 min" },
-          { name: "HIFU", price: "$550 / 120 min" },
-          { name: "HIFU V-Max", price: "$199 / 75 min" },
+        kind: "list",
+        title: "Add-ons",
+        items: [
+          { name: "Scalp Massage", price: "$20", meta: min(15) },
+          { name: "Foot Massage", price: "$20", meta: min(15) },
+          { name: "Neck & Shoulder Massage", price: "$30", meta: min(20) },
+          { name: "Detox Foot Massage + Herbal Bath", price: "$30", meta: min(20) },
+          { name: "Hair Styling: Straightening Hair", price: "$30", meta: min(20) },
+          { name: "Hair Styling: Curly Hair", price: "$30", meta: min(20) },
         ],
       },
     ],
   },
   {
     id: "facial",
+    nav: "Facial",
     title: "Facial",
-    blocks: [
+    subtitle: "Skin rituals",
+    image: "/price-list/facial.webp",
+    categories: [
       {
         kind: "list",
-        rows: [
-          {
-            name: "Basic Facial",
-            desc: "Gentle stretching and pressure point techniques to restore balance and promote relaxation.",
-            price: "$90 / 60 min",
-          },
-          {
-            name: "Serums Cocktail Infusion",
-            desc: "A custom three-serum blend infused deep for targeted hydration, brightening and repair.",
-            price: "$160 / 75 min",
-          },
-          {
-            name: "Hollywood Facial",
-            desc: "Oxygen infusion facial for an instantly refreshed, plumped and radiant glow.",
-            price: "$180 / 75 min",
-          },
-          {
-            name: "Ceya RF Facial",
-            desc: "Radiofrequency treatment that gently firms and tightens for a refreshed, youthful look.",
-            price: "$180 / 75 min",
-          },
-          {
-            name: "Brightening Facial",
-            desc: "Niacinamide infusion and brightening mask to even tone and boost radiance.",
-            price: "$250 / 90 min",
-          },
-          {
-            name: "Nano Algae Infusion Facial",
-            desc: "Nano marine algae infusion deeply hydrates tired, dehydrated and dull-looking skin.",
-            price: "$250 / 90 min",
-          },
-          {
-            name: "Carbon Laser Facial",
-            desc: "Carbon laser technology purifies pores and refines texture for a clearer glow.",
-            price: "$250 / 90 min",
-          },
+        items: [
+          { name: "Basic Facial", price: "$90", meta: min(60), desc: "Cleanse face, exfoliate, extract blackheads, facial massage, mask application, moisturiser & sunscreen, shoulder–neck–head massage." },
+          { name: "Serum Cocktail Infusion", price: "$160", meta: min(75), desc: "A targeted skin infusion treatment featuring a customised blend of three serums selected to support skin vitality and glow." },
+          { name: "Hollywood Facial", price: "$180", meta: min(75), desc: "Enhanced hydration for an instantly refreshed glow." },
+          { name: "Ceya RF Facial", price: "$180", meta: min(75), desc: "A gentle radiofrequency treatment that warms the skin to support collagen activity and promote a refreshed, youthful-looking complexion." },
+          { name: "Carbon Laser Facial", price: "$250", meta: min(90), desc: "A revitalising blend of carbon laser technology, enzyme exfoliation and deep hydration to purify skin, refine texture and restore a natural glow." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "skin",
+    nav: "Skin Treatments",
+    title: "Skin Treatments",
+    subtitle: "Advanced skin care",
+    image: "/price-list/skin.webp",
+    categories: [
+      {
+        kind: "list",
+        items: [
+          { name: "Skin Needling Full Face", price: "$250", meta: min(90) },
+          { name: "Skin Needling Rejuvenation", price: "$250", meta: min(90) },
+          { name: "Cold Plasma Needling", price: "$350", meta: min(90) },
+          { name: "Scar Refinement Needling", price: "$450", meta: min(90) },
+          { name: "Plasma Forehead", price: "$600", meta: min(45) },
+          { name: "Plasma Eye Area", price: "$750", meta: min(45) },
+          { name: "Plasma Chin", price: "$950", meta: min(45) },
+          { name: "Plasma Full Face Renewal", price: "$1,800", meta: "5 hr" },
+          { name: "Meso Therapy", price: "$450", meta: min(120) },
+          { name: "HIFU", price: "$550", meta: min(120) },
         ],
       },
     ],
   },
   {
     id: "nails",
+    nav: "Nails",
     title: "Nails",
-    blocks: [
+    subtitle: "Manicure & nail care",
+    image: "/price-list/nails.webp",
+    categories: [
       {
         kind: "matrix",
         title: "Manicure",
         columns: ["Standard Colour", "Shellac"],
         rows: [
-          { name: "Buff, Shape & Polish (Hands)", values: ["$12", "$20"] },
-          { name: "Buff, Shape & Polish (Feet)", values: ["$16", "$24"] },
-          { name: "Manicure", values: ["$20", "$28"] },
-          { name: "Buff, Shape & Polish (Hands & Feet)", values: ["$28", "$40"] },
+          { name: "Buff, Shape & Polish (Hands)", values: ["$15", "$25"] },
+          { name: "Buff, Shape & Polish (Feet)", values: ["$20", "$30"] },
+          { name: "Manicure", values: ["$25", "$35"] },
+          { name: "Buff, Shape & Polish Hands & Feet", values: ["$35", "$45"] },
           { name: "Spa Pedicure", values: ["$28", "$36"] },
-          { name: "Manicure & Spa Pedicure", values: ["$40", "$60"] },
+          { name: "Manicure & Spa Pedicure", values: ["$50", "$75"] },
         ],
       },
       {
         kind: "matrix",
         title: "Builder Gel",
-        columns: ["Standard Colour", "Shellac"],
+        singleColumnLabel: "Shellac",
         rows: [
-          { name: "Builder Gel Overlay (natural nails)", values: [null, "$55"] },
+          { name: "Builder Gel Overlay (Natural Nails)", values: [null, "$55"] },
           { name: "Builder Gel Full Set", values: [null, "$65"] },
           { name: "Builder Gel Extensions", values: [null, "$70"] },
           { name: "Builder Gel Infill", values: [null, "$55"] },
@@ -230,10 +188,10 @@ export const priceSections: PriceSection[] = [
         title: "Acrylic",
         columns: ["Standard Colour", "Shellac"],
         rows: [
-          { name: "Acrylic Infill", values: ["$28", "$36"] },
-          { name: "Acrylic Full Set", values: ["$32", "$40"] },
-          { name: "French Tip Infill", values: ["$40", "$48"] },
-          { name: "French Tip Full Set", values: ["$44", "$52"] },
+          { name: "Acrylic Infill", values: ["$35", "$45"] },
+          { name: "Acrylic Full Set", values: ["$50", "$60"] },
+          { name: "French Tip Infill", values: ["$40", "$50"] },
+          { name: "French Tip Full Set", values: ["$55", "$65"] },
         ],
       },
       {
@@ -241,21 +199,24 @@ export const priceSections: PriceSection[] = [
         title: "Gel Powder",
         columns: ["Standard Colour", "Shellac"],
         rows: [
-          { name: "Gel Powder Infill", values: ["$32", null] },
-          { name: "Gel Powder Full Set", values: ["$44", null] },
-          { name: "Pink & White Powder Infill", values: ["$48", null] },
-          { name: "Pink & White Powder Full Set", values: ["$64", null] },
-          { name: "Acrylic Infill (Feet)", values: ["$36", "$48"] },
-          { name: "Acrylic Full Set (Feet)", values: ["$48", "$60"] },
+          { name: "Gel Powder Infill", values: ["$40", null] },
+          { name: "Gel Powder Full Set", values: ["$55", null] },
+          { name: "Pink & White Powder Infill", values: ["$60", null] },
+          { name: "Pink & White Powder Full Set", values: ["$80", null] },
+          { name: "Acrylic Infill (Feet)", values: ["$45", "$60"] },
+          { name: "Acrylic Full Set (Feet)", values: ["$60", "$75"] },
         ],
       },
       {
-        kind: "compact",
-        title: "Add-On",
-        rows: [
-          { name: "Diamontes", price: "Large $1 / Small $0.50" },
-          { name: "Nail Art Design — per nail", price: "Simple $2.5 / Complex $5" },
-          { name: "Nail Art Chrome Colour", price: "$2.5 per nail / $20 full set" },
+        kind: "list",
+        title: "Add-ons",
+        items: [
+          { name: "Diamontes – Large", price: "$1" },
+          { name: "Diamontes – Small", price: "$0.50" },
+          { name: "Nail Art Design – Simple", price: "$2.50", meta: "per nail" },
+          { name: "Nail Art Design – Complex", price: "$5", meta: "per nail" },
+          { name: "Nail Art Chrome Colour", price: "$2.50", meta: "per nail" },
+          { name: "Nail Art Chrome Colour – Full Set", price: "$20" },
           { name: "Nail Repair", price: "$5" },
           { name: "Clear Gel Top Coat", price: "$5" },
           { name: "Acrylic Tips Application", price: "From $5" },
@@ -267,107 +228,109 @@ export const priceSections: PriceSection[] = [
   },
   {
     id: "lashes",
+    nav: "Lashes",
     title: "Lashes",
-    blocks: [
+    subtitle: "Lash extensions & lifts",
+    image: "/price-list/lashes.webp",
+    categories: [
       {
         kind: "matrix",
-        columns: ["Fullset", "Refill"],
+        title: "Lash Extensions",
+        columns: ["Full Set", "Refill"],
         rows: [
-          { name: "Classic", values: ["$80", "$50 / 2 weeks"] },
-          { name: "Hybrid", values: ["$100", "$80"] },
+          { name: "Classic", values: ["$80", "$50"], desc: "Refill: 2 weeks" },
+          { name: "Hybrid", values: ["$100", "$60"] },
           { name: "Volume", values: ["$120", "$70"] },
           { name: "Wispy Volume", values: ["$130", "$80"] },
           { name: "Wet Look Set", values: ["$130", "$80"] },
           { name: "Anime Lashes", values: ["$140", "$85"] },
           { name: "Fox Eye Set", values: ["$130", "$80"] },
           { name: "Mega Volume", values: ["$150", "$90"] },
-          { name: "Lash Lift", values: ["$80", null] },
-          { name: "Lash Lift + Tint", values: ["$100", null] },
         ],
       },
       {
-        kind: "compact",
-        title: "Add-On",
-        rows: [
+        kind: "list",
+        title: "Lash Lifts",
+        items: [
+          { name: "Lash Lift", price: "$80" },
+          { name: "Lash Lift + Tint", price: "$100" },
+        ],
+      },
+      {
+        kind: "list",
+        title: "Add-ons",
+        items: [
           { name: "Lash Bath", price: "$10" },
-          { name: "Colored Lashes", price: "$15" },
-          { name: "Colored Lashes", price: "$20" },
           { name: "Lash Removal", price: "$20" },
+          { name: "Coloured Lashes", price: "$15" },
           { name: "Eyebrow Tint", price: "$20" },
+          { name: "Bottom Lashes", price: "$20" },
         ],
       },
     ],
   },
   {
     id: "waxing",
+    nav: "Waxing",
     title: "Waxing",
-    blocks: [
+    subtitle: "Smooth skin, gentle care",
+    image: "/price-list/waxing.webp",
+    categories: [
       {
-        kind: "compact",
+        kind: "list",
         title: "Face Waxing",
-        rows: [
-          { name: "Eyebrows", price: "$15 / 15 min" },
-          { name: "Lip", price: "$15 / 15 min" },
-          { name: "Chin", price: "$15 / 15 min" },
-          { name: "Sides of Face", price: "$20 / 15 min" },
-          { name: "Full Face", price: "$40 / 30 min" },
+        items: [
+          { name: "Eyebrows", price: "$15", meta: min(15) },
+          { name: "Lip", price: "$15", meta: min(15) },
+          { name: "Chin", price: "$15", meta: min(15) },
+          { name: "Sides of Face", price: "$20", meta: min(15) },
+          { name: "Full Face", price: "$40", meta: min(30) },
         ],
       },
       {
-        kind: "compact",
+        kind: "list",
         title: "Upper Body",
-        rows: [
-          { name: "Stomach Strip", price: "$10 / 15 min" },
-          { name: "Under Arms", price: "$20 / 15 min" },
-          { name: "Full Stomach", price: "$25 / 25 min" },
-          { name: "Lower Back", price: "$25 / 30 min" },
-          { name: "Half Arms", price: "$30 / 30 min" },
-          { name: "Chest", price: "$40 / 30 min" },
-          { name: "Full Back", price: "$45 / 35 min" },
-          { name: "Full Arms", price: "$50 / 45 min" },
+        items: [
+          { name: "Stomach Strip", price: "$10", meta: min(15) },
+          { name: "Under Arms", price: "$20", meta: min(15) },
+          { name: "Full Stomach", price: "$25", meta: min(25) },
+          { name: "Lower Back", price: "$25", meta: min(30) },
+          { name: "Half Arms", price: "$30", meta: min(30) },
+          { name: "Chest", price: "$40", meta: min(30) },
+          { name: "Full Back", price: "$45", meta: min(35) },
+          { name: "Full Arms", price: "$50", meta: min(45) },
         ],
       },
       {
-        kind: "compact",
+        kind: "list",
         title: "Lower Body",
-        rows: [
-          { name: "Feet & Toes", price: "$15 / 15 min" },
-          { name: "Lower Legs", price: "$40 / 30 min" },
-          { name: "Half Legs", price: "$40 / 30 min" },
-          { name: "Upper Legs", price: "$45 / 30 min" },
-          { name: "Full Legs", price: "$60 / 45 min" },
+        items: [
+          { name: "Feet & Toes", price: "$15", meta: min(15) },
+          { name: "Lower Legs", price: "$40", meta: min(30) },
+          { name: "Half Legs", price: "$40", meta: min(30) },
+          { name: "Upper Legs", price: "$45", meta: min(30) },
+          { name: "Full Legs", price: "$60", meta: min(45) },
         ],
       },
       {
-        kind: "compact",
+        kind: "list",
         title: "Bikini Body",
-        rows: [
-          { name: "Bikini Line", price: "$30 / 15 min" },
-          { name: "Extended Bikini", price: "$40 / 15 min" },
-          { name: "Maintenance Brazilian (4–6 Weeks)", price: "$50 / 15 min" },
-          { name: "Brazilian", price: "$60 / 15 min" },
+        items: [
+          { name: "Bikini Line", price: "$30", meta: min(15) },
+          { name: "Extended Bikini", price: "$40", meta: min(30) },
+          { name: "Maintenance Brazilian (4–6 Weeks)", price: "$50", meta: min(30) },
+          { name: "Brazilian", price: "$60", meta: min(30) },
         ],
       },
       {
-        kind: "compact",
-        title: "Men's Body",
-        rows: [
-          { name: "Chest", price: "$45 / 50 min" },
-          { name: "Full Arms", price: "$50 / 50 min" },
-          { name: "Full Legs", price: "$50 / 50 min" },
-          { name: "Back & Shoulders", price: "$70 / 60 min" },
+        kind: "list",
+        title: "Men’s Body",
+        items: [
+          { name: "Chest", price: "$45", meta: min(50) },
+          { name: "Full Arms", price: "$50", meta: min(50) },
+          { name: "Full Legs", price: "$50", meta: min(50) },
+          { name: "Back & Shoulders", price: "$70", meta: min(60) },
         ],
-      },
-    ],
-  },
-  {
-    id: "sauna-ritual",
-    title: "Sauna Ritual",
-    blocks: [
-      {
-        kind: "note",
-        title: "$30 / 15 min",
-        text: "A warm sauna ritual to gently open the senses, ease the body and prepare you for the journey ahead.",
       },
     ],
   },
