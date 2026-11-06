@@ -207,8 +207,25 @@ ul { margin: 0; padding: 0; list-style: none; }
   text-align: center; font-size: 10px; font-weight: 600; color: #fff; text-shadow: 0 1px 4px #0006;
 }
 
+/* Quick-action bar (navigation from the handoff HTML) */
+.app { padding-bottom: 68px; }
+.bottom-bar {
+  position: fixed; z-index: 30; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: min(100%, 510px); display: flex; gap: 8px;
+  padding: 10px max(14px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+  background: #fffaf0ed; border-top: 1px solid var(--line-2);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+.bottom-bar a {
+  flex: 1; display: flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 10px;
+  border: 1px solid var(--brown); border-radius: 6px; color: var(--brown);
+  font-size: 13px; font-weight: 700; white-space: nowrap;
+}
+.bottom-bar a.primary { background: var(--brown); color: var(--paper); }
+
 @media (min-width: 760px) {
   .app { margin: 28px auto 34px; border-radius: 9px; }
+  .bottom-bar { border-radius: 9px 9px 0 0; }
 }
 @media (max-width: 360px) {
   .service-section { padding-inline: 18px; }

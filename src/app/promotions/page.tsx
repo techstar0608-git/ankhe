@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import Masthead from "@/components/Masthead";
 import SectionNav from "@/components/SectionNav";
 import SiteFooter from "@/components/SiteFooter";
@@ -116,6 +117,13 @@ export default function PromotionsPage() {
       ))}
 
       <SiteFooter />
+
+      <div className="bottom-bar" aria-label="Quick actions">
+        <Link href="/">Price List</Link>
+        <a href={bookingHref} className="primary" {...external}>
+          {BOOKING_URL ? "Book Now →" : "Call to Book →"}
+        </a>
+      </div>
     </main>
   );
 }

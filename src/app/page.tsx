@@ -108,6 +108,13 @@ export default function PriceListPage() {
       </div>
 
       <SiteFooter />
+
+      <div className="bottom-bar" aria-label="Quick actions">
+        <Link href="/promotions">Special Offers</Link>
+        <a href="#headspa" className="primary">
+          Explore Services ↑
+        </a>
+      </div>
     </main>
   );
 }
