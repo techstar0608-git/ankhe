@@ -43,6 +43,8 @@ export type ServiceSection = {
   image: string;
   /** CSS object-position matching the Figma crop. */
   imagePosition?: string;
+  /** Zoom into the photo, e.g. to crop out a detail; origin is the fixed point. */
+  imageZoom?: { scale: number; origin: string };
   categories: Category[];
 };
 
@@ -289,6 +291,8 @@ export const serviceSections: ServiceSection[] = [
     subtitle: "Smooth Skin · Gentle Care",
     image: "/price-list/waxing.webp",
     imagePosition: "43% 83%",
+    // Crops out the logo on the staff uniform (top-right).
+    imageZoom: { scale: 1.35, origin: "15% 100%" },
     categories: [
       {
         kind: "list",
