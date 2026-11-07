@@ -292,7 +292,7 @@ export const serviceSections: ServiceSection[] = [
     image: "/price-list/waxing.webp",
     imagePosition: "43% 83%",
     // Crops out the logo on the staff uniform (top-right).
-    imageZoom: { scale: 1.35, origin: "15% 100%" },
+    imageZoom: { scale: 1.2, origin: "50% 100%" },
     categories: [
       {
         kind: "list",
