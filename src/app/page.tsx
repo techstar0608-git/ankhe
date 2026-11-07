@@ -86,11 +86,7 @@ export default function PriceListPage() {
               alt={`${s.title} at An Khê Wellness`}
               fill
               sizes="(max-width: 510px) 90vw, 460px"
-              style={{
-                objectPosition: s.imagePosition,
-                transform: s.imageZoom ? `scale(${s.imageZoom.scale})` : undefined,
-                transformOrigin: s.imageZoom?.origin,
-              }}
+              style={s.imagePosition ? { objectPosition: s.imagePosition } : undefined}
               priority={i === 0}
             />
           </div>
